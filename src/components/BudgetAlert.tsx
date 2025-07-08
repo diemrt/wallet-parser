@@ -9,7 +9,7 @@ const BudgetAlert = () => {
   if (!showAlertBox) return null;
 
   return (
-    <div className={`relative flex items-start max-w-3xl mx-auto rounded-lg border p-4 mb-4 shadow-sm transition-all duration-200
+    <div className={`absolute bottom-5 right-5 flex items-start max-w-3xl mx-auto rounded-lg border p-4 mb-4 shadow-sm transition-all duration-200
       ${showAlert ? 'bg-yellow-50 border-yellow-300 text-yellow-800' : 'bg-green-50 border-green-300 text-green-800'}`}
     >
       <div className="flex-shrink-0 mt-0.5">
@@ -25,8 +25,8 @@ const BudgetAlert = () => {
         </p>
         <p className="text-sm mt-1">
           {showAlert
-            ? <>La somma dei budget delle categorie è <b>{totalBudget}</b>, che supera il valore massimo consigliato di 100. Verifica la configurazione dei budget nelle categorie.</>
-            : <>La somma dei budget delle categorie è <b>{totalBudget}</b> su 100. La configurazione dei budget è corretta.</>
+            ? <>La somma dei budget delle categorie arriva al <b>{totalBudget}%</b>. Verifica la configurazione dei budget nelle categorie.</>
+            : <>La configurazione dei budget è corretta.</>
           }
         </p>
       </div>

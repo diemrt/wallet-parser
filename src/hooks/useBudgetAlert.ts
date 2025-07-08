@@ -17,7 +17,7 @@ export function useBudgetAlert() {
         if (data && Array.isArray(data.categories)) {
           const sum = data.categories.reduce((acc: number, cat: Category) => acc + (Number(cat.budget) || 0), 0);
           setTotalBudget(sum);
-          if (sum > 100) setShowAlert(true);
+          if (sum != 100) setShowAlert(true);
         }
       })
       .catch(() => {});
