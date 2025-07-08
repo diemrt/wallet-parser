@@ -135,55 +135,76 @@ const TransactionReport: React.FC<TransactionReportProps> = ({ summary }) => {
         </div>
       )}
 
-      {/* Lista transazioni come tabella filtrabile e ordinabile */}
-      <div className="bg-white border border-gray-200 rounded-xl p-6 mt-6">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center justify-between">
-          <span>Transazioni ({sortedTransactions.length})</span>
-          <input
-            type="text"
-            placeholder="Filtra per descrizione o categoria..."
-            className="border rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-            value={filter}
-            onChange={e => setFilter(e.target.value)}
-            style={{ minWidth: 220 }}
-          />
-        </h3>
-        <div className="overflow-x-auto rounded-lg">
-          <table className="min-w-full text-sm text-gray-800">
-            <thead>
-              <tr className="bg-blue-100">
-                <th className="p-2 cursor-pointer" onClick={() => { setSortKey('data'); setSortDir(sortKey === 'data' && sortDir === 'desc' ? 'asc' : 'desc'); }}>
-                  Data {sortKey === 'data' && (sortDir === 'asc' ? '▲' : '▼')}
-                </th>
-                <th className="p-2 cursor-pointer" onClick={() => { setSortKey('categoria'); setSortDir(sortKey === 'categoria' && sortDir === 'desc' ? 'asc' : 'desc'); }}>
-                  Categoria {sortKey === 'categoria' && (sortDir === 'asc' ? '▲' : '▼')}
-                </th>
-                <th className="p-2">Descrizione</th>
-                <th className="p-2">Canale</th>
-                <th className="p-2 cursor-pointer" onClick={() => { setSortKey('importo'); setSortDir(sortKey === 'importo' && sortDir === 'desc' ? 'asc' : 'desc'); }}>
-                  Importo {sortKey === 'importo' && (sortDir === 'asc' ? '▲' : '▼')}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {sortedTransactions.map((transaction, index) => (
-                <tr key={index} className={
-                  transaction.importo >= 0
-                    ? 'bg-green-50 hover:bg-green-100 border-b border-green-200'
-                    : 'bg-red-50 hover:bg-red-100 border-b border-red-200'
-                }>
-                  <td className="p-2 whitespace-nowrap">{formatDate(transaction.dataContabile)}</td>
-                  <td className="p-2 whitespace-nowrap capitalize">{categorizeTransaction(transaction)}</td>
-                  <td className="p-2">{transaction.causaleDescrizione.length > 60 ? transaction.causaleDescrizione.substring(0, 60) + '...' : transaction.causaleDescrizione}</td>
-                  <td className="p-2 whitespace-nowrap">{transaction.canale}</td>
-                  <td className={`p-2 whitespace-nowrap text-right font-semibold ${transaction.importo >= 0 ? 'text-green-600' : 'text-red-600'}`}>{formatCurrency(transaction.importo)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {sortedTransactions.length === 0 && (
-            <div className="text-center text-gray-500 py-8">Nessuna transazione trovata.</div>
-          )}
+      {/* Lista transazioni come tabella filtrabile e ordinabile - UI moderna */}
+      <div className="max-w-[85rem] px-2 py-8 sm:px-4 lg:px-6 lg:py-10 mx-auto">
+        <div className="flex flex-col">
+          <div className="-m-1.5 overflow-x-auto">
+            <div className="p-1.5 min-w-full inline-block align-middle">
+              <div className="bg-white border border-gray-200 rounded-xl shadow-2xs overflow-hidden">
+                {/* Header */}
+                <div className="px-6 py-4 border-b border-gray-200 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-800">Transazioni ({sortedTransactions.length})</h3>
+                    <p className="text-sm text-gray-600">Filtra e ordina le tue transazioni facilmente.</p>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Filtra per descrizione o categoria..."
+                    className="border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-50 min-w-[220px]"
+                    value={filter}
+                    onChange={e => setFilter(e.target.value)}
+                  />
+                </div>
+                {/* Table */}
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th scope="col" className="px-6 py-3 text-left whitespace-nowrap cursor-pointer select-none text-xs font-semibold uppercase text-gray-800" onClick={() => { setSortKey('data'); setSortDir(sortKey === 'data' && sortDir === 'desc' ? 'asc' : 'desc'); }}>
+                        Data {sortKey === 'data' && (sortDir === 'asc' ? '▲' : '▼')}
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-left whitespace-nowrap cursor-pointer select-none text-xs font-semibold uppercase text-gray-800" onClick={() => { setSortKey('categoria'); setSortDir(sortKey === 'categoria' && sortDir === 'desc' ? 'asc' : 'desc'); }}>
+                        Categoria {sortKey === 'categoria' && (sortDir === 'asc' ? '▲' : '▼')}
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-left whitespace-nowrap text-xs font-semibold uppercase text-gray-800">
+                        Descrizione
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-left whitespace-nowrap text-xs font-semibold uppercase text-gray-800">
+                        Canale
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-right whitespace-nowrap cursor-pointer select-none text-xs font-semibold uppercase text-gray-800" onClick={() => { setSortKey('importo'); setSortDir(sortKey === 'importo' && sortDir === 'desc' ? 'asc' : 'desc'); }}>
+                        Importo {sortKey === 'importo' && (sortDir === 'asc' ? '▲' : '▼')}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {/* Riga totale importi */}
+                    <tr className="bg-blue-50">
+                      <td colSpan={4} className="px-6 py-3 text-right font-bold text-blue-900">Totale importi:</td>
+                      <td className="px-6 py-3 text-right font-extrabold text-blue-900">
+                        {formatCurrency(sortedTransactions.reduce((acc, t) => acc + t.importo, 0))}
+                      </td>
+                    </tr>
+                    {sortedTransactions.map((transaction, index) => (
+                      <tr key={index} className={
+                        transaction.importo >= 0
+                          ? 'bg-green-50 hover:bg-green-100 border-b border-green-200'
+                          : 'bg-red-50 hover:bg-red-100 border-b border-red-200'
+                      }>
+                        <td className="px-6 py-3 whitespace-nowrap text-sm">{formatDate(transaction.dataContabile)}</td>
+                        <td className="px-6 py-3 whitespace-nowrap capitalize text-sm">{categorizeTransaction(transaction)}</td>
+                        <td className="px-6 py-3 text-sm">{transaction.causaleDescrizione.length > 60 ? transaction.causaleDescrizione.substring(0, 60) + '...' : transaction.causaleDescrizione}</td>
+                        <td className="px-6 py-3 whitespace-nowrap text-sm">{transaction.canale}</td>
+                        <td className={`px-6 py-3 whitespace-nowrap text-right font-semibold text-sm ${transaction.importo >= 0 ? 'text-green-600' : 'text-red-600'}`}>{formatCurrency(transaction.importo)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {sortedTransactions.length === 0 && (
+                  <div className="text-center text-gray-500 py-8">Nessuna transazione trovata.</div>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
