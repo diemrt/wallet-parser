@@ -50,17 +50,24 @@ const TransactionReport: React.FC<TransactionReportProps> = ({ summary }) => {
     }))
     .sort((a, b) => b.importo - a.importo);
 
-  // Stati per filtro e ordinamento
+  // Stati per filtro, tipo transazione e ordinamento
   const [filter, setFilter] = useState('');
+  const [transactionType, setTransactionType] = useState<'all' | 'entrate' | 'uscite'>('all');
   const [sortKey, setSortKey] = useState<'data' | 'categoria' | 'importo'>('data');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
 
-  // Funzione di ordinamento
+  // Funzione di filtro e ordinamento
   const sortedTransactions = [...summary.transazioni]
-    .filter(t =>
-      t.causaleDescrizione.toLowerCase().includes(filter.toLowerCase()) ||
-      categorizeTransactionDynamic(t).toLowerCase().includes(filter.toLowerCase())
-    )
+    .filter(t => {
+      // Filtro per tipo di transazione
+      if (transactionType === 'entrate' && t.importo < 0) return false;
+      if (transactionType === 'uscite' && t.importo >= 0) return false;
+      // Filtro per testo
+      return (
+        t.causaleDescrizione.toLowerCase().includes(filter.toLowerCase()) ||
+        categorizeTransactionDynamic(t).toLowerCase().includes(filter.toLowerCase())
+      );
+    })
     .sort((a, b) => {
       if (sortKey === 'data') {
         const da = a.dataContabile.split('/').reverse().join('-');
@@ -177,13 +184,24 @@ const TransactionReport: React.FC<TransactionReportProps> = ({ summary }) => {
                     <h3 className="text-xl font-semibold text-gray-800">Transazioni ({sortedTransactions.length})</h3>
                     <p className="text-sm text-gray-600">Filtra e ordina le tue transazioni facilmente.</p>
                   </div>
-                  <input
-                    type="text"
-                    placeholder="Filtra per descrizione o categoria..."
-                    className="border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-50 min-w-[220px]"
-                    value={filter}
-                    onChange={e => setFilter(e.target.value)}
-                  />
+                  <div className="flex flex-col md:flex-row gap-2 items-center">
+                    <input
+                      type="text"
+                      placeholder="Filtra per descrizione o categoria..."
+                      className="border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-50 min-w-[220px]"
+                      value={filter}
+                      onChange={e => setFilter(e.target.value)}
+                    />
+                    <select
+                      className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-50"
+                      value={transactionType}
+                      onChange={e => setTransactionType(e.target.value as 'all' | 'entrate' | 'uscite')}
+                    >
+                      <option value="all">Tutte</option>
+                      <option value="entrate">Solo Entrate</option>
+                      <option value="uscite">Solo Uscite</option>
+                    </select>
+                  </div>
                 </div>
                 {/* Table */}
                 <table className="min-w-full divide-y divide-gray-200">
