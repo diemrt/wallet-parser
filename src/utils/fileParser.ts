@@ -63,17 +63,27 @@ export const parseCSVFile = async (file: File): Promise<TransactionSummary> => {
         // Rimuovi la prima riga (header) se presente
         const dataLines = lines.slice(1);
         
+        // Prova a rilevare il separatore di colonna dalla prima riga di dati
+        let separator = ',';
+        if (dataLines.length > 0) {
+          if (dataLines[0].includes(';')) separator = ';';
+          else if (dataLines[0].includes('|')) separator = '|';
+        }
+
         const transactions: Transaction[] = dataLines
           .filter(line => line.trim())
           .map(line => {
-            // Dividi per pipe (|) o punto e virgola (;) o virgola
-            const columns = line.split(/[|;,]/).map(col => col.trim());
-            
+            // Split solo sul separatore rilevato
+            const columns = line.split(separator).map(col => col.trim());
             if (columns.length >= 6) {
+              // Gestione decimali con virgola
+              let importoRaw = columns[2] || '0';
+              // Rimuovi eventuali "." come separatore migliaia e sostituisci "," con "." per i decimali
+              importoRaw = importoRaw.replace(/\./g, '').replace(',', '.');
               return {
                 dataContabile: columns[0] || '',
                 dataValuta: columns[1] || '',
-                importo: parseFloat((columns[2]?.replace(',', '.')) || '0') || 0,
+                importo: parseFloat(importoRaw) || 0,
                 divisa: columns[3] || 'EUR',
                 causaleDescrizione: columns[4] || '',
                 canale: columns[5] || ''
