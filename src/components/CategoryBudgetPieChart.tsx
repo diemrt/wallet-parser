@@ -6,7 +6,26 @@ interface CategoryBudgetPieChartProps {
 }
 
 const COLORS = [
-  '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28CFF', '#FF6699', '#FFB347', '#B6D7A8', '#FFD700', '#FF6347', '#4682B4', '#6A5ACD', '#20B2AA', '#FF7F50', '#6495ED', '#DC143C', '#2E8B57', '#FF4500', '#8A2BE2', '#00CED1'
+  '#2563eb', // blu moderno
+  '#10b981', // verde acqua
+  '#f59e42', // arancione moderno
+  '#ef4444', // rosso moderno
+  '#6366f1', // indaco
+  '#f43f5e', // rosa acceso
+  '#fbbf24', // giallo moderno
+  '#0ea5e9', // azzurro
+  '#a21caf', // viola intenso
+  '#14b8a6', // teal
+  '#eab308', // giallo scuro
+  '#3b82f6', // blu chiaro
+  '#22d3ee', // ciano
+  '#7c3aed', // viola
+  '#f87171', // rosso chiaro
+  '#4ade80', // verde chiaro
+  '#f472b6', // rosa pastello
+  '#2dd4bf', // teal chiaro
+  '#e11d48', // rosso intenso
+  '#64748b'  // grigio moderno
 ];
 
 const CategoryBudgetPieChart: React.FC<CategoryBudgetPieChartProps> = ({ data }) => {
@@ -20,6 +39,7 @@ const CategoryBudgetPieChart: React.FC<CategoryBudgetPieChartProps> = ({ data })
             nameKey="nome"
             cx="50%"
             cy="50%"
+            innerRadius={60}
             outerRadius={100}
             label={({ name, percent }) => `${name}${typeof percent === 'number' ? ` (${(percent * 100).toFixed(1)}%)` : ''}`}
           >
