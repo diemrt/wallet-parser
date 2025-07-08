@@ -12,7 +12,7 @@ const BudgetPieChartModal: React.FC<BudgetPieChartModalProps> = ({ open, onClose
 
   // Prepara i dati per il pie chart: solo categorie con budget
   const data = categories
-    .filter(cat => typeof cat.budget === 'number')
+    .filter(cat => typeof cat.budget === 'number' && cat.budget! > 0)
     .map(cat => ({ nome: cat.nome, budget: cat.budget! }));
 
   return (
