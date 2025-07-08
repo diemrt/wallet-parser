@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import CategoryPieChart from './CategoryPieChart';
+import BudgetPieChartModal from './BudgetPieChartModal';
+import BudgetAlertPieTrigger from './BudgetAlertPieTrigger';
 import type { Transaction, TransactionSummary, CategoryData } from '../types/transaction';
 import { ArrowTrendingUpIcon, ArrowTrendingDownIcon, CurrencyEuroIcon } from '@heroicons/react/24/outline';
 
@@ -11,6 +12,10 @@ interface TransactionReportProps {
 const TransactionReport: React.FC<TransactionReportProps> = ({ summary, budgetMedio }) => {
   // Stato per le categorie caricate da JSON
   const [categories, setCategories] = useState<{ label: string; keywords: string[]; budget?: number }[]>([]);
+  // Stato per la modale Pie Chart
+  const [showPieModal, setShowPieModal] = useState(false);
+  // const handleShowPieChart = () => setShowPieModal(true);
+  const handleClosePieChart = () => setShowPieModal(false);
   // Gli state di loading/error non sono usati, quindi li rimuovo
 
   // Carica le categorie dal file JSON all'avvio
@@ -159,7 +164,7 @@ const TransactionReport: React.FC<TransactionReportProps> = ({ summary, budgetMe
         </div>
       </div>
 
-      {/* Categorie di spesa come cards + grafico */}
+      {/* Categorie di spesa come cards (grafico rimosso, ora in modale) */}
       {categorie.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Cards */}
@@ -194,23 +199,23 @@ const TransactionReport: React.FC<TransactionReportProps> = ({ summary, budgetMe
             </div>
             <p className={`text-xs ${categoria.nome.toLowerCase() === 'altro' ? 'text-red-600' : categoria.nome.toLowerCase() === 'giroconto' ? 'text-gray-600' : 'text-blue-600'}`}>{categoria.percentuale.toFixed(1)}% del totale uscite</p>
             {sforamento !== null && sforamento > 0 && (
-                <div
-                className={`mt-2 text-xs text-center font-semibold rounded px-2 py-1 border
-                  ${sforamentoPercentuale > 10
-                  ? 'text-red-700 bg-red-100 border-red-300'
-                  : 'text-yellow-700 bg-yellow-100 border-yellow-300'
-                  }`}
-                >
-                  Hai speso <b>{formatCurrency(sforamento)}</b> oltre il budget ({sforamentoPercentuale.toFixed(1)}% oltre il limite)
-                </div>
+                <BudgetAlertPieTrigger
+                  categoria={categoria}
+                  sforamento={sforamento}
+                  sforamentoPercentuale={sforamentoPercentuale}
+                  onShowPieChart={() => setShowPieModal(true)}
+                />
             )}
           </div>
         );
       })}
-          {/* Pie Chart */}
-          <div className="col-span-1 md:col-span-1 flex items-center justify-center">
-            <CategoryPieChart data={categorie} />
-          </div>
+          {/* Pie Chart rimosso da qui, ora in modale */}
+      {/* Modale Pie Chart Budget */}
+      <BudgetPieChartModal
+        open={showPieModal}
+        onClose={handleClosePieChart}
+        categories={categories.map(cat => ({ nome: cat.label, budget: cat.budget }))}
+      />
         </div>
       )}
 
