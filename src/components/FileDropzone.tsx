@@ -17,8 +17,6 @@ const FileDropzone: React.FC<FileDropzoneProps> = ({ onFileUpload, isLoading }) 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
-      'application/vnd.ms-excel': ['.xls'],
       'text/csv': ['.csv']
     },
     multiple: false,
@@ -48,13 +46,13 @@ const FileDropzone: React.FC<FileDropzoneProps> = ({ onFileUpload, isLoading }) 
         ) : (
           <>
             <h3 className="text-lg font-semibold text-gray-700">
-              {isDragActive ? 'Rilascia il file qui' : 'Carica il tuo estratto conto'}
+              {isDragActive ? 'Rilascia il file qui' : 'Carica il tuo file CSV'}
             </h3>
             <p className="text-gray-500">
-              Trascina e rilascia un file Excel o CSV oppure clicca per selezionarlo
+              Trascina e rilascia un file CSV oppure clicca per selezionarlo
             </p>
             <p className="text-sm text-gray-400">
-              Formati supportati: .xlsx, .xls, .csv
+              Formato supportato: .csv
             </p>
           </>
         )}
