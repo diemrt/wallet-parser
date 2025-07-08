@@ -166,12 +166,11 @@ const TransactionReport: React.FC<TransactionReportProps> = ({ summary, budgetMe
       {categorie.map((categoria, index) => {
         // Calcolo sforamento budget
         let sforamento = null;
-        let sforamentoPercent = null;
+        let maxEuro = 0;
         if (categoria.budget && budgetMedio > 0) {
-          const maxEuro = (categoria.budget / 100) * budgetMedio;
+          maxEuro = (categoria.budget / 100) * budgetMedio;
           if (categoria.importo > maxEuro) {
             sforamento = categoria.importo - maxEuro;
-            sforamentoPercent = ((categoria.importo - maxEuro) / maxEuro) * 100;
           }
         }
         return (
@@ -184,9 +183,8 @@ const TransactionReport: React.FC<TransactionReportProps> = ({ summary, budgetMe
             </div>
             <p className="text-xs text-blue-600">{categoria.percentuale.toFixed(1)}% del totale uscite</p>
             {sforamento !== null && sforamento > 0 && (
-              <div className="mt-2 text-xs font-semibold text-red-700 bg-red-100 border border-red-300 rounded px-2 py-1">
-                Sforato il budget stimato di {sforamentoPercent!.toFixed(1)}%<br />
-                ({formatCurrency(sforamento)})
+              <div className="mt-2 text-xs text-center font-semibold text-red-700 bg-red-100 border border-red-300 rounded px-2 py-1">
+                <b>Hai speso {formatCurrency(sforamento)} oltre il budget</b>
               </div>
             )}
           </div>
