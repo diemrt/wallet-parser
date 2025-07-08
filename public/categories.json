@@ -4,61 +4,64 @@
       "label": "Ristorazione",
       "keywords": [
         "mcdonald", "ristorante", "bar", "pizz", "piaderia", "mood", "fornaio", "carrefour", "conad", "trex", "old", "schiaccia", "caffe", "caffè", "wiener", "palatofino", "nzorosciate", "trattoria", "macha", "marianna", "oratorio"
-      ]
+      ],
+      "budget": 10
     },
     {
       "label": "Svago",
       "keywords": [
         "feltrinelli", "tiger", "uci"
-      ]
+      ],
+      "budget": 5
     },
     {
       "label": "Alimentari",
       "keywords": [
         "supermercato", "market", "alimentari", "iper", "pam", "frutta", "famila"
-      ]
+      ],
+      "budget": 4
     },
     {
       "label": "Auto",
       "keywords": [
         "benzina", "carburante", "esso", "eni", "unipol", "stazione", "parking"
-      ]
+      ],
+      "budget": 20
     },
     {
       "label": "Salute",
       "keywords": [
         "farmacia", "medico", "ospedale", "tigota", "sport"
-      ]
+      ],
+      "budget": 3
     },
     {
       "label": "Abbigliamento",
       "keywords": [
         "abbigliamento", "scarpe", "moda", "calliope", "clayton", "alcott", "calz"
-      ]
+      ],
+      "budget": 3
     },
     {
       "label": "Utenze",
       "keywords": [
         "bolletta", "utenze", "gas", "luce"
-      ]
+      ],
+      "budget": 10
     },
     {
       "label": "Bancarie",
       "keywords": [
         "banca", "commissioni", "canone", "bollo", "mutuo", "agos", "conto", "competenze", "m.av"
-      ]
+      ],
+      "budget": 40
     },
     {
       "label": "Casa",
       "keywords": [
         "ikea", "leroy"
-      ]
-    },
-    {
-      "label": "Stipendio",
-      "keywords": [
-        "stipendio", "bonifico in entrata"
-      ]
+      ],
+      "budget": 3
     }
   ]
 }

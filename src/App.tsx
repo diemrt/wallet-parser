@@ -8,6 +8,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [summary, setSummary] = useState<TransactionSummary | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [budgetMedio, setBudgetMedio] = useState<string>("");
 
   const handleFileUpload = async (file: File) => {
     setIsLoading(true);
@@ -51,8 +52,22 @@ function App() {
 
         {!summary ? (
           <div className="max-w-2xl mx-auto">
-            <FileDropzone onFileUpload={handleFileUpload} isLoading={isLoading} />
-            
+            <div className="flex flex-col items-center gap-4 mb-4">
+              <FileDropzone onFileUpload={handleFileUpload} isLoading={isLoading} />
+              <div className="flex flex-col items-start">
+                <label htmlFor="budgetMedio" className="text-sm font-medium text-gray-700">Budget medio stimato (€)</label>
+                <small className='text-gray-500 mb-3'>Popola questo campo per calcolare se e di quanto è stato sforato il budget per categoria</small>
+                <input
+                  id="budgetMedio"
+                  type="number"
+                  min={1}
+                  step={1}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-50"
+                  value={budgetMedio}
+                  onChange={e => setBudgetMedio(e.target.value)}
+                />
+              </div>
+            </div>
             {error && (
               <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
                 <div className="flex items-center">
@@ -68,7 +83,6 @@ function App() {
                 </div>
               </div>
             )}
-
             {/* Esempio formato file */}
             <div className="mt-8 p-6 bg-blue-50 border border-blue-200 rounded-lg">
               <h3 className="text-lg font-semibold text-blue-800 mb-3">
@@ -90,17 +104,28 @@ function App() {
         ) : (
           <div>
             {/* Pulsante per caricare un nuovo file */}
-            <div className="mb-6 text-center">
+            <div className="mb-6 text-center flex flex-col items-center gap-2">
               <button
                 onClick={handleReset}
                 className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
               >
                 Carica nuovo file
               </button>
+              <div className="flex flex-col items-center">
+                <label htmlFor="budgetMedio2" className="text-xs text-gray-600 mb-1">Budget medio stimato (€)</label>
+                <input
+                  id="budgetMedio2"
+                  type="number"
+                  min={1}
+                  step={1}
+                  className="border border-gray-300 rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-50 w-24"
+                  value={budgetMedio}
+                  onChange={e => setBudgetMedio(e.target.value)}
+                />
+              </div>
             </div>
-
             {/* Report */}
-            <TransactionReport summary={summary} />
+            <TransactionReport summary={summary} budgetMedio={Number(budgetMedio)} />
           </div>
         )}
       </div>
