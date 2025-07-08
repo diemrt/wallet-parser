@@ -3,31 +3,37 @@
     {
       "label": "Ristorazione",
       "keywords": [
-        "mcdonald", "ristorante", "bar", "pizzeria"
+        "mcdonald", "ristorante", "bar", "pizzeria", "piaderia", "mood", "fornaio", "carrefour", "conad", "trex", "old", "schiaccia", "caffe", "caffè", "wiener", "palatofino"
+      ]
+    },
+    {
+      "label": "Svago",
+      "keywords": [
+        "feltrinelli", "tiger", "uci"
       ]
     },
     {
       "label": "Alimentari",
       "keywords": [
-        "supermercato", "market", "alimentari", "iper"
+        "supermercato", "market", "alimentari", "iper", "pam", "frutta", "famila"
       ]
     },
     {
-      "label": "Carburante",
+      "label": "Auto",
       "keywords": [
-        "benzina", "carburante", "esso", "eni"
+        "benzina", "carburante", "esso", "eni", "unipol"
       ]
     },
     {
       "label": "Salute",
       "keywords": [
-        "farmacia", "medico", "ospedale"
+        "farmacia", "medico", "ospedale", "tigota", "sport"
       ]
     },
     {
       "label": "Abbigliamento",
       "keywords": [
-        "abbigliamento", "scarpe", "moda"
+        "abbigliamento", "scarpe", "moda", "calliope", "clayton", "alcott", "calz"
       ]
     },
     {
@@ -39,7 +45,13 @@
     {
       "label": "Bancarie",
       "keywords": [
-        "banca", "commissioni", "canone"
+        "banca", "commissioni", "canone", "bollo", "mutuo", "agos", "conto", "competenze"
+      ]
+    },
+    {
+      "label": "Casa",
+      "keywords": [
+        "ikea", "leroy"
       ]
     },
     {

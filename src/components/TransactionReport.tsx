@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CategoryPieChart from './CategoryPieChart';
 import type { Transaction, TransactionSummary, CategoryData } from '../types/transaction';
 import { ArrowTrendingUpIcon, ArrowTrendingDownIcon, CurrencyEuroIcon } from '@heroicons/react/24/outline';
@@ -8,6 +8,36 @@ interface TransactionReportProps {
 }
 
 const TransactionReport: React.FC<TransactionReportProps> = ({ summary }) => {
+  // Stato per le categorie caricate da JSON
+  const [categories, setCategories] = useState<{ label: string; keywords: string[] }[]>([]);
+  // Gli state di loading/error non sono usati, quindi li rimuovo
+
+  // Carica le categorie dal file JSON all'avvio
+  useEffect(() => {
+    fetch('/categories.json')
+      .then(res => {
+        if (!res.ok) throw new Error('Errore nel caricamento delle categorie');
+        return res.json();
+      })
+      .then(data => {
+        setCategories(data.categories || []);
+      })
+      .catch(() => {
+        setCategories([]);
+      });
+  }, []);
+
+  // Funzione categorizzatrice dinamica
+  function categorizeTransactionDynamic(transaction: Transaction): string {
+    const description = transaction.causaleDescrizione.toLowerCase();
+    for (const cat of categories) {
+      if (cat.keywords.some(keyword => description.includes(keyword))) {
+        return cat.label;
+      }
+    }
+    return 'Altro';
+  }
+
   // Prepara i dati delle categorie per la visualizzazione
   const categorie: CategoryData[] = Object.entries(summary.categorieSpese)
     .map(([nome, importo]) => ({
@@ -15,7 +45,7 @@ const TransactionReport: React.FC<TransactionReportProps> = ({ summary }) => {
       importo: Math.abs(importo),
       percentuale: (Math.abs(importo) / Math.abs(summary.totalUscite)) * 100,
       transazioni: summary.transazioni.filter(t => 
-        t.importo < 0 && categorizeTransaction(t).toLowerCase() === nome.toLowerCase()
+        t.importo < 0 && categorizeTransactionDynamic(t).toLowerCase() === nome.toLowerCase()
       ).length
     }))
     .sort((a, b) => b.importo - a.importo);
@@ -29,7 +59,7 @@ const TransactionReport: React.FC<TransactionReportProps> = ({ summary }) => {
   const sortedTransactions = [...summary.transazioni]
     .filter(t =>
       t.causaleDescrizione.toLowerCase().includes(filter.toLowerCase()) ||
-      categorizeTransaction(t).toLowerCase().includes(filter.toLowerCase())
+      categorizeTransactionDynamic(t).toLowerCase().includes(filter.toLowerCase())
     )
     .sort((a, b) => {
       if (sortKey === 'data') {
@@ -38,8 +68,8 @@ const TransactionReport: React.FC<TransactionReportProps> = ({ summary }) => {
         return sortDir === 'asc' ? da.localeCompare(db) : db.localeCompare(da);
       }
       if (sortKey === 'categoria') {
-        const ca = categorizeTransaction(a).toLowerCase();
-        const cb = categorizeTransaction(b).toLowerCase();
+        const ca = categorizeTransactionDynamic(a).toLowerCase();
+        const cb = categorizeTransactionDynamic(b).toLowerCase();
         return sortDir === 'asc' ? ca.localeCompare(cb) : cb.localeCompare(ca);
       }
       if (sortKey === 'importo') {
@@ -191,7 +221,7 @@ const TransactionReport: React.FC<TransactionReportProps> = ({ summary }) => {
                           : 'bg-red-50 hover:bg-red-100 border-b border-red-200'
                       }>
                         <td className="px-6 py-3 whitespace-nowrap text-sm">{formatDate(transaction.dataContabile)}</td>
-                        <td className="px-6 py-3 whitespace-nowrap capitalize text-sm">{categorizeTransaction(transaction)}</td>
+                        <td className="px-6 py-3 whitespace-nowrap capitalize text-sm">{categorizeTransactionDynamic(transaction)}</td>
                         <td className="px-6 py-3 text-sm">{transaction.causaleDescrizione.length > 60 ? transaction.causaleDescrizione.substring(0, 60) + '...' : transaction.causaleDescrizione}</td>
                         <td className="px-6 py-3 whitespace-nowrap text-sm">{transaction.canale}</td>
                         <td className={`px-6 py-3 whitespace-nowrap text-right font-semibold text-sm ${transaction.importo >= 0 ? 'text-green-600' : 'text-red-600'}`}>{formatCurrency(transaction.importo)}</td>
@@ -211,36 +241,6 @@ const TransactionReport: React.FC<TransactionReportProps> = ({ summary }) => {
   );
 };
 
-// Funzione per categorizzare le transazioni
-function categorizeTransaction(transaction: Transaction): string {
-  const description = transaction.causaleDescrizione.toLowerCase();
-  
-  if (description.includes('mcdonald') || description.includes('ristorante') || description.includes('bar') || description.includes('pizzeria')) {
-    return 'ristorazione';
-  }
-  if (description.includes('supermercato') || description.includes('market') || description.includes('alimentari')) {
-    return 'alimentari';
-  }
-  if (description.includes('benzina') || description.includes('carburante') || description.includes('esso') || description.includes('eni')) {
-    return 'carburante';
-  }
-  if (description.includes('farmacia') || description.includes('medico') || description.includes('ospedale')) {
-    return 'salute';
-  }
-  if (description.includes('abbigliamento') || description.includes('scarpe') || description.includes('moda')) {
-    return 'abbigliamento';
-  }
-  if (description.includes('bolletta') || description.includes('utenze') || description.includes('gas') || description.includes('luce')) {
-    return 'utenze';
-  }
-  if (description.includes('banca') || description.includes('commissioni') || description.includes('canone')) {
-    return 'bancarie';
-  }
-  if (description.includes('stipendio') || description.includes('bonifico in entrata')) {
-    return 'stipendio';
-  }
-  
-  return 'altro';
-}
+// La funzione di categorizzazione è ora dinamica e usa le categorie caricate da JSON
 
 export default TransactionReport;
