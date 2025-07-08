@@ -175,15 +175,24 @@ const TransactionReport: React.FC<TransactionReportProps> = ({ summary, budgetMe
             sforamentoPercentuale = (sforamento / budgetMedio) * 100;
           }
         }
+        // Determina lo stile speciale per "Altro" e "Giroconto"
+        let cardClass = "rounded-xl shadow-lg p-6 flex flex-col items-center hover:scale-105 transition-transform duration-200 ";
+        if (categoria.nome.toLowerCase() === "altro") {
+          cardClass += " bg-gradient-to-br from-red-100 to-red-200 border border-red-300";
+        } else if (categoria.nome.toLowerCase() === "giroconto") {
+          cardClass += " bg-gradient-to-br from-gray-100 to-gray-200 border border-gray-300";
+        } else {
+          cardClass += " bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200";
+        }
         return (
-          <div key={index} className="rounded-xl shadow-lg bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 p-6 flex flex-col items-center hover:scale-105 transition-transform duration-200">
-            <h4 className="font-bold text-lg text-blue-800 capitalize mb-2">{categoria.nome}</h4>
-            <p className="text-2xl font-extrabold text-blue-900 mb-1">{formatCurrency(categoria.importo)}</p>
-            <p className="text-sm text-blue-700 mb-2">{categoria.transazioni} transazioni</p>
-            <div className="w-full bg-blue-200 rounded-full h-2 mb-2">
-              <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${categoria.percentuale}%` }}></div>
+          <div key={index} className={cardClass}>
+            <h4 className={`font-bold text-lg capitalize mb-2 ${categoria.nome.toLowerCase() === 'altro' ? 'text-red-800' : categoria.nome.toLowerCase() === 'giroconto' ? 'text-gray-700' : 'text-blue-800'}`}>{categoria.nome}</h4>
+            <p className={`text-2xl font-extrabold mb-1 ${categoria.nome.toLowerCase() === 'altro' ? 'text-red-900' : categoria.nome.toLowerCase() === 'giroconto' ? 'text-gray-900' : 'text-blue-900'}`}>{formatCurrency(categoria.importo)}</p>
+            <p className={`text-sm mb-2 ${categoria.nome.toLowerCase() === 'altro' ? 'text-red-700' : categoria.nome.toLowerCase() === 'giroconto' ? 'text-gray-700' : 'text-blue-700'}`}>{categoria.transazioni} transazioni</p>
+            <div className={`w-full rounded-full h-2 mb-2 ${categoria.nome.toLowerCase() === 'altro' ? 'bg-red-200' : categoria.nome.toLowerCase() === 'giroconto' ? 'bg-gray-200' : 'bg-blue-200'}`}>
+              <div className={`${categoria.nome.toLowerCase() === 'altro' ? 'bg-red-500' : categoria.nome.toLowerCase() === 'giroconto' ? 'bg-gray-500' : 'bg-blue-500'} h-2 rounded-full`} style={{ width: `${categoria.percentuale}%` }}></div>
             </div>
-            <p className="text-xs text-blue-600">{categoria.percentuale.toFixed(1)}% del totale uscite</p>
+            <p className={`text-xs ${categoria.nome.toLowerCase() === 'altro' ? 'text-red-600' : categoria.nome.toLowerCase() === 'giroconto' ? 'text-gray-600' : 'text-blue-600'}`}>{categoria.percentuale.toFixed(1)}% del totale uscite</p>
             {sforamento !== null && sforamento > 0 && (
                 <div
                 className={`mt-2 text-xs text-center font-semibold rounded px-2 py-1 border
