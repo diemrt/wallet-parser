@@ -1,10 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ExclamationTriangleIcon, CheckCircleIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useBudgetAlert } from '../hooks/useBudgetAlert';
 
 const BudgetAlert = () => {
   const [showAlertBox, setShowAlertBox] = useState(true);
   const { showAlert, totalBudget } = useBudgetAlert();
+
+
+  useEffect(() => {
+    if (!showAlertBox) return;
+    const timer = setTimeout(() => {
+      setShowAlertBox(false);
+    }, 4000); // 4 secondi
+    return () => clearTimeout(timer);
+  }, [showAlertBox]);
 
   if (!showAlertBox) return null;
 
