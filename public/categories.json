@@ -15,6 +15,13 @@
       "budget": 5
     },
     {
+      "label": "Giroconto",
+      "keywords": [
+        "ricarica carta conto internet banking"
+      ],
+      "budget": 0
+    },
+    {
       "label": "Alimentari",
       "keywords": [
         "supermercato", "market", "alimentari", "iper", "pam", "frutta", "famila"
