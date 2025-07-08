@@ -1,0 +1,52 @@
+{
+  "categories": [
+    {
+      "label": "Ristorazione",
+      "keywords": [
+        "mcdonald", "ristorante", "bar", "pizzeria"
+      ]
+    },
+    {
+      "label": "Alimentari",
+      "keywords": [
+        "supermercato", "market", "alimentari"
+      ]
+    },
+    {
+      "label": "Carburante",
+      "keywords": [
+        "benzina", "carburante", "esso", "eni"
+      ]
+    },
+    {
+      "label": "Salute",
+      "keywords": [
+        "farmacia", "medico", "ospedale"
+      ]
+    },
+    {
+      "label": "Abbigliamento",
+      "keywords": [
+        "abbigliamento", "scarpe", "moda"
+      ]
+    },
+    {
+      "label": "Utenze",
+      "keywords": [
+        "bolletta", "utenze", "gas", "luce"
+      ]
+    },
+    {
+      "label": "Bancarie",
+      "keywords": [
+        "banca", "commissioni", "canone"
+      ]
+    },
+    {
+      "label": "Stipendio",
+      "keywords": [
+        "stipendio", "bonifico in entrata"
+      ]
+    }
+  ]
+}

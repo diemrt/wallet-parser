@@ -153,33 +153,18 @@ function parseDate(dateString: string): Date {
   return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
 }
 
+// Nuova funzione che usa il file categories.json per la categorizzazione
+import categoriesData from '../../public/categories.json';
+
 function categorizeTransaction(transaction: Transaction): string {
   const description = transaction.causaleDescrizione.toLowerCase();
-  
-  if (description.includes('mcdonald') || description.includes('ristorante') || description.includes('bar') || description.includes('pizzeria')) {
-    return 'ristorazione';
+  // Scorri tutte le categorie e cerca una corrispondenza LIKE (inclusione) in lowercase
+  for (const category of (categoriesData.categories || [])) {
+    for (const keyword of category.keywords) {
+      if (description.includes(keyword.toLowerCase())) {
+        return category.label.toLowerCase();
+      }
+    }
   }
-  if (description.includes('supermercato') || description.includes('market') || description.includes('alimentari')) {
-    return 'alimentari';
-  }
-  if (description.includes('benzina') || description.includes('carburante') || description.includes('esso') || description.includes('eni')) {
-    return 'carburante';
-  }
-  if (description.includes('farmacia') || description.includes('medico') || description.includes('ospedale')) {
-    return 'salute';
-  }
-  if (description.includes('abbigliamento') || description.includes('scarpe') || description.includes('moda')) {
-    return 'abbigliamento';
-  }
-  if (description.includes('bolletta') || description.includes('utenze') || description.includes('gas') || description.includes('luce')) {
-    return 'utenze';
-  }
-  if (description.includes('banca') || description.includes('commissioni') || description.includes('canone')) {
-    return 'bancarie';
-  }
-  if (description.includes('stipendio') || description.includes('bonifico in entrata')) {
-    return 'stipendio';
-  }
-  
   return 'altro';
 }
