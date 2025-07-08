@@ -56,6 +56,9 @@ const TransactionReport: React.FC<TransactionReportProps> = ({ summary }) => {
   const [sortKey, setSortKey] = useState<'data' | 'categoria' | 'importo'>('data');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
 
+  // Stato per la modale di dettaglio transazione
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
+
   // Funzione di filtro e ordinamento
   const sortedTransactions = [...summary.transazioni]
     .filter(t => {
@@ -233,11 +236,16 @@ const TransactionReport: React.FC<TransactionReportProps> = ({ summary }) => {
                       </td>
                     </tr>
                     {sortedTransactions.map((transaction, index) => (
-                      <tr key={index} className={
-                        transaction.importo >= 0
-                          ? 'bg-green-50 hover:bg-green-100 border-b border-green-200'
-                          : 'bg-red-50 hover:bg-red-100 border-b border-red-200'
-                      }>
+                      <tr
+                        key={index}
+                        className={
+                          transaction.importo >= 0
+                            ? 'bg-green-50 hover:bg-green-100 border-b border-green-200 cursor-pointer'
+                            : 'bg-red-50 hover:bg-red-100 border-b border-red-200 cursor-pointer'
+                        }
+                        onClick={() => setSelectedTransaction(transaction)}
+                        title="Clicca per vedere il dettaglio"
+                      >
                         <td className="px-6 py-3 whitespace-nowrap text-sm">{formatDate(transaction.dataContabile)}</td>
                         <td className="px-6 py-3 whitespace-nowrap capitalize text-sm">{categorizeTransactionDynamic(transaction)}</td>
                         <td className="px-6 py-3 text-sm">{transaction.causaleDescrizione.length > 60 ? transaction.causaleDescrizione.substring(0, 60) + '...' : transaction.causaleDescrizione}</td>
@@ -255,6 +263,49 @@ const TransactionReport: React.FC<TransactionReportProps> = ({ summary }) => {
           </div>
         </div>
       </div>
+
+      {/* Modale dettaglio transazione */}
+      {selectedTransaction && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
+          <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 relative animate-fade-in">
+            <button
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl font-bold"
+              onClick={() => setSelectedTransaction(null)}
+              aria-label="Chiudi"
+            >
+              &times;
+            </button>
+            <h3 className="text-xl font-bold mb-4 text-blue-800">Dettaglio Transazione</h3>
+            <div className="space-y-2 text-sm">
+              <div><span className="font-semibold">Data:</span> {formatDate(selectedTransaction.dataContabile)}</div>
+              <div><span className="font-semibold">Categoria:</span> {categorizeTransactionDynamic(selectedTransaction)}</div>
+              <div><span className="font-semibold">Descrizione:</span> {selectedTransaction.causaleDescrizione}</div>
+              <div><span className="font-semibold">Canale:</span> {selectedTransaction.canale}</div>
+              <div><span className="font-semibold">Importo:</span> {formatCurrency(selectedTransaction.importo)}</div>
+              {selectedTransaction.dataValuta && (
+                <div><span className="font-semibold">Data valuta:</span> {formatDate(selectedTransaction.dataValuta)}</div>
+              )}
+              {/* Campi extra non presenti nell'interfaccia Transaction sono omessi */}
+              {/* Mostra tutte le altre proprietà se presenti */}
+              {Object.entries(selectedTransaction).map(([key, value]) => {
+                if ([
+                  'dataContabile',
+                  'dataValuta',
+                  'causaleDescrizione',
+                  'canale',
+                  'importo',
+                  'causale',
+                  'categoria',
+                  'note'
+                ].includes(key)) return null;
+                return (
+                  <div key={key}><span className="font-semibold">{key}:</span> {String(value)}</div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

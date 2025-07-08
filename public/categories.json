@@ -3,7 +3,7 @@
     {
       "label": "Ristorazione",
       "keywords": [
-        "mcdonald", "ristorante", "bar", "pizzeria", "piaderia", "mood", "fornaio", "carrefour", "conad", "trex", "old", "schiaccia", "caffe", "caffè", "wiener", "palatofino"
+        "mcdonald", "ristorante", "bar", "pizz", "piaderia", "mood", "fornaio", "carrefour", "conad", "trex", "old", "schiaccia", "caffe", "caffè", "wiener", "palatofino", "nzorosciate", "trattoria", "macha", "marianna", "oratorio"
       ]
     },
     {
@@ -21,7 +21,7 @@
     {
       "label": "Auto",
       "keywords": [
-        "benzina", "carburante", "esso", "eni", "unipol"
+        "benzina", "carburante", "esso", "eni", "unipol", "stazione", "parking"
       ]
     },
     {
@@ -45,7 +45,7 @@
     {
       "label": "Bancarie",
       "keywords": [
-        "banca", "commissioni", "canone", "bollo", "mutuo", "agos", "conto", "competenze"
+        "banca", "commissioni", "canone", "bollo", "mutuo", "agos", "conto", "competenze", "m.av"
       ]
     },
     {
