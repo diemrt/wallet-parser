@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import BudgetAlert from './components/BudgetAlert';
 import FileDropzone from './components/FileDropzone';
 import TransactionReport from './components/TransactionReport';
 import { parseExcelFile, parseCSVFile } from './utils/fileParser';
@@ -9,6 +10,8 @@ function App() {
   const [summary, setSummary] = useState<TransactionSummary | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [budgetMedio, setBudgetMedio] = useState<string>("");
+
+  // Alert spostato in componente dedicato
 
   const handleFileUpload = async (file: File) => {
     setIsLoading(true);
@@ -39,6 +42,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <BudgetAlert />
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Header */}
         <div className="text-center mb-8">
